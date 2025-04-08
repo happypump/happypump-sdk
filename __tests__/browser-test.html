@@ -1,0 +1,27 @@
+<!-- browser-test.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Browser SDK Test</title>
+</head>
+<body>
+  <script type="module">
+    import { HappyPumpSDK } from '../dist/browser/with-external/index.js';
+
+    if (!HappyPumpSDK) {
+      throw new Error('❌ HappyPumpSDK is not defined');
+    }
+
+    if (typeof HappyPumpSDK !== 'function') {
+      throw new Error(`❌ HappyPumpSDK is not a function, got: ${typeof HappyPumpSDK}`);
+    }
+
+    if (HappyPumpSDK.name !== 'HappyPumpSDK') {
+      throw new Error(`❌ Unexpected class name: ${HappyPumpSDK.name}`);
+    }
+
+    console.log('Passed browser checks');
+  </script>
+</body>
+</html>
