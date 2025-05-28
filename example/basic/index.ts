@@ -83,7 +83,7 @@ const main = async () => {
       SLIPPAGE_BASIS_POINTS,
       undefined,
       {
-        unitLimit: 250000,
+        unitLimit: 500000,
         unitPrice: 250000,
       },
     );
@@ -109,7 +109,7 @@ const main = async () => {
       SLIPPAGE_BASIS_POINTS,
       undefined,
       {
-        unitLimit: 250000,
+        unitLimit: 500000,
         unitPrice: 250000,
       },
     );
@@ -136,7 +136,7 @@ const main = async () => {
         BigInt(currentSPLBalance * Math.pow(10, DEFAULT_DECIMALS)),
         SLIPPAGE_BASIS_POINTS,
         {
-          unitLimit: 250000,
+          unitLimit: 500000,
           unitPrice: 250000,
         },
       );
