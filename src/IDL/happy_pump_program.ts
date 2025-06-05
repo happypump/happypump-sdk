@@ -52,7 +52,10 @@ export type HappyPumpProgram = {
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -516,7 +519,10 @@ export type HappyPumpProgram = {
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -657,7 +663,10 @@ export type HappyPumpProgram = {
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -673,7 +682,7 @@ export type HappyPumpProgram = {
     {
       "name": "migrateToRaydium",
       "docs": [
-        "Allows the admin to migrate bonding curve to raydium cpmm"
+        "Migrate bonding curve to raydium cpmm"
       ],
       "discriminator": [
         116,
@@ -711,7 +720,10 @@ export type HappyPumpProgram = {
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -723,18 +735,6 @@ export type HappyPumpProgram = {
         {
           "name": "wsolMint",
           "writable": true
-        },
-        {
-          "name": "token0Mint",
-          "docs": [
-            "Token_0 mint, the key must smaller then token_1 mint."
-          ]
-        },
-        {
-          "name": "token1Mint",
-          "docs": [
-            "Token_1 mint, the key must grater then token_0 mint."
-          ]
         },
         {
           "name": "observationState",
@@ -889,7 +889,7 @@ export type HappyPumpProgram = {
           }
         },
         {
-          "name": "payerWsolAccount",
+          "name": "creatorWsolAccount",
           "writable": true,
           "pda": {
             "seeds": [
@@ -979,7 +979,7 @@ export type HappyPumpProgram = {
           }
         },
         {
-          "name": "payerTokenAccount",
+          "name": "creatorTokenAccount",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1069,7 +1069,7 @@ export type HappyPumpProgram = {
           }
         },
         {
-          "name": "poolToken0Vault",
+          "name": "poolWsolVault",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1094,7 +1094,7 @@ export type HappyPumpProgram = {
               },
               {
                 "kind": "account",
-                "path": "token0Mint"
+                "path": "wsolMint"
               }
             ],
             "program": {
@@ -1104,7 +1104,7 @@ export type HappyPumpProgram = {
           }
         },
         {
-          "name": "poolToken1Vault",
+          "name": "poolTokenVault",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1129,7 +1129,7 @@ export type HappyPumpProgram = {
               },
               {
                 "kind": "account",
-                "path": "token1Mint"
+                "path": "mint"
               }
             ],
             "program": {
@@ -1185,36 +1185,7 @@ export type HappyPumpProgram = {
         },
         {
           "name": "poolState",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  112,
-                  111,
-                  111,
-                  108
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "ammConfig"
-              },
-              {
-                "kind": "account",
-                "path": "token0Mint"
-              },
-              {
-                "kind": "account",
-                "path": "token1Mint"
-              }
-            ],
-            "program": {
-              "kind": "account",
-              "path": "cpSwapProgram"
-            }
-          }
+          "writable": true
         },
         {
           "name": "lpMint",
@@ -1251,6 +1222,7 @@ export type HappyPumpProgram = {
         },
         {
           "name": "cpAuthority",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1344,6 +1316,689 @@ export type HappyPumpProgram = {
       "args": []
     },
     {
+      "name": "migrateToRaydiumByAdmin",
+      "docs": [
+        "Migrate bonding curve to raydium cpmm by admin"
+      ],
+      "discriminator": [
+        178,
+        146,
+        241,
+        189,
+        6,
+        182,
+        34,
+        182
+      ],
+      "accounts": [
+        {
+          "name": "cpSwapProgram",
+          "address": "CPMDWBwJDtYax9qW7AyRuVC19Cc4L4Vcy4n2BHAbHkCW"
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "creatorLpToken",
+          "writable": true
+        },
+        {
+          "name": "global",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  118,
+                  50
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "wsolMint",
+          "writable": true
+        },
+        {
+          "name": "observationState",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  111,
+                  98,
+                  115,
+                  101,
+                  114,
+                  118,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "poolState"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cpSwapProgram"
+            }
+          }
+        },
+        {
+          "name": "bondingCurve",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  45,
+                  99,
+                  117,
+                  114,
+                  118,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bondingCurveTokenAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "bondingCurve"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "creatorWsolAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "payer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "wsolMint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "creatorTokenAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "payer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "poolWsolVault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "poolState"
+              },
+              {
+                "kind": "account",
+                "path": "wsolMint"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cpSwapProgram"
+            }
+          }
+        },
+        {
+          "name": "poolTokenVault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "poolState"
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cpSwapProgram"
+            }
+          }
+        },
+        {
+          "name": "createPoolFee",
+          "docs": [
+            "create pool fee account"
+          ],
+          "writable": true,
+          "address": "G11FKBRaAkHAKuLCgLM6K6NUc9rTjPAznRCjZifrTQe2"
+        },
+        {
+          "name": "ammConfig",
+          "docs": [
+            "Which config the pool belongs to."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  109,
+                  109,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cpSwapProgram"
+            }
+          }
+        },
+        {
+          "name": "poolState",
+          "writable": true
+        },
+        {
+          "name": "lpMint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  108,
+                  112,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "poolState"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cpSwapProgram"
+            }
+          }
+        },
+        {
+          "name": "cpAuthority",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  110,
+                  100,
+                  95,
+                  108,
+                  112,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cpSwapProgram"
+            }
+          }
+        },
+        {
+          "name": "associatedTokenProgram",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "eventAuthority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  95,
+                  95,
+                  101,
+                  118,
+                  101,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "reset",
+      "docs": [
+        "Allows the admin to reset the global state."
+      ],
+      "discriminator": [
+        23,
+        81,
+        251,
+        84,
+        138,
+        183,
+        240,
+        214
+      ],
+      "accounts": [
+        {
+          "name": "global",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "sell",
       "docs": [
         "Sells tokens into a bonding curve."
@@ -1376,7 +2031,10 @@ export type HappyPumpProgram = {
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -1723,7 +2381,10 @@ export type HappyPumpProgram = {
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -1779,7 +2440,10 @@ export type HappyPumpProgram = {
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -1868,7 +2532,10 @@ export type HappyPumpProgram = {
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -1960,7 +2627,10 @@ export type HappyPumpProgram = {
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -2811,6 +3481,10 @@ export type HappyPumpProgram = {
             "type": "u64"
           },
           {
+            "name": "poolMigrationFee",
+            "type": "u64"
+          },
+          {
             "name": "creatorFeeBasisPoints",
             "type": "u64"
           },
@@ -2841,6 +3515,15 @@ export type HappyPumpProgram = {
           {
             "name": "withdrawAuthority",
             "type": "pubkey"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                16
+              ]
+            }
           }
         ]
       }
@@ -2901,6 +3584,10 @@ export type HappyPumpProgram = {
             "type": "u64"
           },
           {
+            "name": "poolMigrationFee",
+            "type": "u64"
+          },
+          {
             "name": "creatorFeeBasisPoints",
             "type": "u64"
           },
@@ -2958,6 +3645,12 @@ export type HappyPumpProgram = {
           },
           {
             "name": "mintFee",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "poolMigrationFee",
             "type": {
               "option": "u64"
             }

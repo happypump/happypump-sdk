@@ -50,8 +50,12 @@ const main = async () => {
 
   const sdk = new HappyPumpSDK(provider);
 
-  const globalAccount = await sdk.getGlobalAccount();
-  console.log(globalAccount);
+  let globalAccount;
+  try {
+    globalAccount = await sdk.getGlobalAccount();
+    console.log(globalAccount);
+  } catch (e) {
+  }
 
   const currentSolBalance = await connection.getBalance(testAccount.publicKey);
   if (currentSolBalance == 0) {
@@ -61,8 +65,6 @@ const main = async () => {
     );
     return;
   }
-
-  console.log(await sdk.getGlobalAccount());
 
   //Check if mint already exists
   const boundingCurveAccount = await sdk.getBondingCurveAccount(mint.publicKey);

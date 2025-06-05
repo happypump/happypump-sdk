@@ -12,7 +12,7 @@ import { HappyPumpProgram, IDL } from "./IDL/index.js";
 
 // const MPL_TOKEN_METADATA_PROGRAM_ID = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s";
 
-export const GLOBAL_ACCOUNT_SEED = "global";
+export const GLOBAL_ACCOUNT_SEED = "global_v2";
 export const MINT_AUTHORITY_SEED = "mint-authority";
 export const BONDING_CURVE_SEED = "bonding-curve";
 export const METADATA_SEED = "metadata";

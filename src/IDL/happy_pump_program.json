@@ -46,7 +46,10 @@
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -510,7 +513,10 @@
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -651,7 +657,10 @@
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -667,7 +676,7 @@
     {
       "name": "migrate_to_raydium",
       "docs": [
-        "Allows the admin to migrate bonding curve to raydium cpmm"
+        "Migrate bonding curve to raydium cpmm"
       ],
       "discriminator": [
         116,
@@ -705,7 +714,10 @@
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -717,18 +729,6 @@
         {
           "name": "wsol_mint",
           "writable": true
-        },
-        {
-          "name": "token_0_mint",
-          "docs": [
-            "Token_0 mint, the key must smaller then token_1 mint."
-          ]
-        },
-        {
-          "name": "token_1_mint",
-          "docs": [
-            "Token_1 mint, the key must grater then token_0 mint."
-          ]
         },
         {
           "name": "observation_state",
@@ -883,7 +883,7 @@
           }
         },
         {
-          "name": "payer_wsol_account",
+          "name": "creator_wsol_account",
           "writable": true,
           "pda": {
             "seeds": [
@@ -973,7 +973,7 @@
           }
         },
         {
-          "name": "payer_token_account",
+          "name": "creator_token_account",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1063,7 +1063,7 @@
           }
         },
         {
-          "name": "pool_token_0_vault",
+          "name": "pool_wsol_vault",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1088,7 +1088,7 @@
               },
               {
                 "kind": "account",
-                "path": "token_0_mint"
+                "path": "wsol_mint"
               }
             ],
             "program": {
@@ -1098,7 +1098,7 @@
           }
         },
         {
-          "name": "pool_token_1_vault",
+          "name": "pool_token_vault",
           "writable": true,
           "pda": {
             "seeds": [
@@ -1123,7 +1123,7 @@
               },
               {
                 "kind": "account",
-                "path": "token_1_mint"
+                "path": "mint"
               }
             ],
             "program": {
@@ -1179,36 +1179,7 @@
         },
         {
           "name": "pool_state",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  112,
-                  111,
-                  111,
-                  108
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "amm_config"
-              },
-              {
-                "kind": "account",
-                "path": "token_0_mint"
-              },
-              {
-                "kind": "account",
-                "path": "token_1_mint"
-              }
-            ],
-            "program": {
-              "kind": "account",
-              "path": "cp_swap_program"
-            }
-          }
+          "writable": true
         },
         {
           "name": "lp_mint",
@@ -1245,6 +1216,7 @@
         },
         {
           "name": "cp_authority",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1338,6 +1310,689 @@
       "args": []
     },
     {
+      "name": "migrate_to_raydium_by_admin",
+      "docs": [
+        "Migrate bonding curve to raydium cpmm by admin"
+      ],
+      "discriminator": [
+        178,
+        146,
+        241,
+        189,
+        6,
+        182,
+        34,
+        182
+      ],
+      "accounts": [
+        {
+          "name": "cp_swap_program",
+          "address": "CPMDWBwJDtYax9qW7AyRuVC19Cc4L4Vcy4n2BHAbHkCW"
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "creator_lp_token",
+          "writable": true
+        },
+        {
+          "name": "global",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  118,
+                  50
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "wsol_mint",
+          "writable": true
+        },
+        {
+          "name": "observation_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  111,
+                  98,
+                  115,
+                  101,
+                  114,
+                  118,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pool_state"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cp_swap_program"
+            }
+          }
+        },
+        {
+          "name": "bonding_curve",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103,
+                  45,
+                  99,
+                  117,
+                  114,
+                  118,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "bonding_curve_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "bonding_curve"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "creator_wsol_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "payer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "wsol_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "creator_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "payer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "pool_wsol_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pool_state"
+              },
+              {
+                "kind": "account",
+                "path": "wsol_mint"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cp_swap_program"
+            }
+          }
+        },
+        {
+          "name": "pool_token_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pool_state"
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cp_swap_program"
+            }
+          }
+        },
+        {
+          "name": "create_pool_fee",
+          "docs": [
+            "create pool fee account"
+          ],
+          "writable": true,
+          "address": "G11FKBRaAkHAKuLCgLM6K6NUc9rTjPAznRCjZifrTQe2"
+        },
+        {
+          "name": "amm_config",
+          "docs": [
+            "Which config the pool belongs to."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  109,
+                  109,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cp_swap_program"
+            }
+          }
+        },
+        {
+          "name": "pool_state",
+          "writable": true
+        },
+        {
+          "name": "lp_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  111,
+                  108,
+                  95,
+                  108,
+                  112,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "pool_state"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cp_swap_program"
+            }
+          }
+        },
+        {
+          "name": "cp_authority",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  97,
+                  110,
+                  100,
+                  95,
+                  108,
+                  112,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "cp_swap_program"
+            }
+          }
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "event_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  95,
+                  95,
+                  101,
+                  118,
+                  101,
+                  110,
+                  116,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "reset",
+      "docs": [
+        "Allows the admin to reset the global state."
+      ],
+      "discriminator": [
+        23,
+        81,
+        251,
+        84,
+        138,
+        183,
+        240,
+        214
+      ],
+      "accounts": [
+        {
+          "name": "global",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "sell",
       "docs": [
         "Sells tokens into a bonding curve."
@@ -1370,7 +2025,10 @@
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -1717,7 +2375,10 @@
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -1773,7 +2434,10 @@
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -1862,7 +2526,10 @@
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -1954,7 +2621,10 @@
                   111,
                   98,
                   97,
-                  108
+                  108,
+                  95,
+                  118,
+                  50
                 ]
               }
             ]
@@ -2805,6 +3475,10 @@
             "type": "u64"
           },
           {
+            "name": "pool_migration_fee",
+            "type": "u64"
+          },
+          {
             "name": "creator_fee_basis_points",
             "type": "u64"
           },
@@ -2835,6 +3509,15 @@
           {
             "name": "withdraw_authority",
             "type": "pubkey"
+          },
+          {
+            "name": "padding",
+            "type": {
+              "array": [
+                "u64",
+                16
+              ]
+            }
           }
         ]
       }
@@ -2895,6 +3578,10 @@
             "type": "u64"
           },
           {
+            "name": "pool_migration_fee",
+            "type": "u64"
+          },
+          {
             "name": "creator_fee_basis_points",
             "type": "u64"
           },
@@ -2952,6 +3639,12 @@
           },
           {
             "name": "mint_fee",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "pool_migration_fee",
             "type": {
               "option": "u64"
             }
