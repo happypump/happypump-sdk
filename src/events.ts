@@ -17,6 +17,10 @@ export function toCreateEvent(event): CreateEvent {
     bondingCurve: new PublicKey(event.bondingCurve),
     user: new PublicKey(event.user),
     timestamp: Number(event.ts),
+    virtualTokenReserves: BigInt(event.virtualTokenReserves),
+    virtualSolReserves: BigInt(event.virtualSolReserves),
+    realTokenReserves: BigInt(event.realTokenReserves),
+    realSolReserves: BigInt(event.realSolReserves),
   };
 }
 

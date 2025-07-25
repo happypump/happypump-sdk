@@ -34,6 +34,10 @@ export type CreateEvent = {
     user: PublicKey;
     tradeAuthority?: PublicKey;
     timestamp: number;
+    virtualTokenReserves: bigint;
+    virtualSolReserves: bigint;
+    realTokenReserves: bigint;
+    realSolReserves: bigint;
   };
 
 export type CompleteEvent = {
