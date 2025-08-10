@@ -93,7 +93,6 @@ export class HappyPumpSDK {
         instructions.push(...createIxs);
 
         if (buyAmountSol > 0) {
-            const globalAccount = await this.getGlobalAccount(commitment);
             const buyAmount = globalAccount.getInitialBuyPrice(buyAmountSol);
             const buyAmountWithSlippage = calculateWithSlippageBuy(
                 buyAmountSol,

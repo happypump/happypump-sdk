@@ -1,6 +1,6 @@
 {
   "name": "happypump",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "A simple SDK for interacting with happypump",
   "type": "module",
   "module": "./dist/esm/index.mjs",
