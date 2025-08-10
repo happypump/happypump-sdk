@@ -97,7 +97,7 @@ export class HappyPumpSDK {
             const buyAmount = globalAccount.getInitialBuyPrice(buyAmountSol);
             const buyAmountWithSlippage = calculateWithSlippageBuy(
                 buyAmountSol,
-                slippageBasisPoints,
+                slippageBasisPoints + globalAccount.systemFeeBasisPoints + globalAccount.creatorFeeBasisPoints,
             );
 
             const buyIxs = await this.getBuyInstructions(
@@ -281,11 +281,14 @@ export class HappyPumpSDK {
         const totalFeeBasisPoints = globalAccount.systemFeeBasisPoints + globalAccount.creatorFeeBasisPoints;
         const effectiveBuyAmountSol = buyAmountSol - (buyAmountSol * totalFeeBasisPoints) / 10000n;
 
-        const buyAmount = bondingCurveAccount.getBuyPrice(effectiveBuyAmountSol);
+        const buyAmount = bondingCurveAccount.getBuyPrice(effectiveBuyAmountSol);        
         const buyAmountWithSlippage = calculateWithSlippageBuy(
             buyAmountSol,
-            slippageBasisPoints,
+            slippageBasisPoints + globalAccount.systemFeeBasisPoints + globalAccount.creatorFeeBasisPoints,
         );
+
+
+
         console.log(`buyAmountSol: ${buyAmountSol}, effectiveBuyAmountSol: ${effectiveBuyAmountSol}, buyAmount: ${buyAmount}, buyAmountWithSlippage: ${buyAmountWithSlippage}`);
 
         return await this.getBuyInstructions(
