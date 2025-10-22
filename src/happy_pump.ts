@@ -30,7 +30,8 @@ export class HappyPumpSDK {
     }
 
     async create(
-        creator: Keypair,
+        signer: Keypair,
+        creator: PublicKey,
         mint: Keypair,
         createTokenMetadata: CreateTokenMetadata,
         tradeAuthority?: PublicKey,
@@ -43,7 +44,8 @@ export class HappyPumpSDK {
         const tokenMetadata = await this.createTokenMetadata(createTokenMetadata);
 
         const instructions = await this.getCreateInstructions(
-            creator.publicKey,
+            signer.publicKey,
+            creator,
             mint,
             createTokenMetadata.name,
             createTokenMetadata.symbol,
@@ -55,8 +57,8 @@ export class HappyPumpSDK {
         return await sendTx(
             this.connection,
             instructions,
-            creator.publicKey,
-            [creator, mint],
+            signer.publicKey,
+            [signer, mint],
             priorityFees,
             commitment,
             finality,
@@ -64,7 +66,8 @@ export class HappyPumpSDK {
     }
 
     async createAndBuy(
-        creator: Keypair,
+        signer: Keypair,
+        creator: PublicKey,
         mint: Keypair,
         createTokenMetadata: CreateTokenMetadata,
         buyAmountSol: bigint,
@@ -81,7 +84,8 @@ export class HappyPumpSDK {
         const tokenMetadata = await this.createTokenMetadata(createTokenMetadata);
 
         const createIxs = await this.getCreateInstructions(
-            creator.publicKey,
+            signer.publicKey,
+            creator,
             mint,
             createTokenMetadata.name,
             createTokenMetadata.symbol,
@@ -100,10 +104,10 @@ export class HappyPumpSDK {
             );
 
             const buyIxs = await this.getBuyInstructions(
-                creator.publicKey,
+                signer.publicKey,
                 mint.publicKey,
                 globalAccount.feeRecipient,
-                creator.publicKey,
+                signer.publicKey,
                 buyAmount,
                 buyAmountWithSlippage,
                 tradeAuthority?.publicKey,
@@ -113,7 +117,7 @@ export class HappyPumpSDK {
             instructions.push(...buyIxs);
         }
 
-        const signers = [creator, mint];
+        const signers = [signer, mint];
         if (!!tradeAuthority) {
             signers.push(tradeAuthority);
         } 
@@ -121,7 +125,7 @@ export class HappyPumpSDK {
         return await sendTx(
             this.connection,
             instructions,
-            creator.publicKey,
+            signer.publicKey,
             signers,
             priorityFees,
             commitment,
@@ -219,6 +223,7 @@ export class HappyPumpSDK {
     }
 
     async getCreateInstructions(
+        signer: PublicKey,
         creator: PublicKey,
         mint: Keypair,
         name: string,
@@ -251,7 +256,7 @@ export class HappyPumpSDK {
             .accounts({
                 program: this.program.programId,
                 mint: mint.publicKey,
-                creator,
+                creator: signer,
                 feeRecipient,             
             }).instruction();
 
