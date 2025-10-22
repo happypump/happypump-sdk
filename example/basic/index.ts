@@ -79,6 +79,7 @@ const main = async () => {
 
     const createResults = await sdk.createAndBuy(
       testAccount,
+      testAccount.publicKey,
       mint,
       tokenMetadata,
       BigInt(0.001 * LAMPORTS_PER_SOL),
