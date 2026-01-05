@@ -34,6 +34,10 @@ export class HappyPumpSDK {
         creator: PublicKey,
         mint: Keypair,
         createTokenMetadata: CreateTokenMetadata,
+        virtualSolReserves: bigint,
+        virtualTokenReserves: bigint,
+        realTokenReserves: bigint,
+        tokenTotalSupply: bigint,
         tradeAuthority?: PublicKey,
         priorityFees?: PriorityFee,
         commitment: Commitment = DEFAULT_COMMITMENT,
@@ -51,6 +55,10 @@ export class HappyPumpSDK {
             createTokenMetadata.symbol,
             tokenMetadata.uri,
             globalAccount.feeRecipient,
+            virtualSolReserves,
+            virtualTokenReserves,
+            realTokenReserves,
+            tokenTotalSupply,
             tradeAuthority,
         );
 
@@ -70,6 +78,10 @@ export class HappyPumpSDK {
         creator: PublicKey,
         mint: Keypair,
         createTokenMetadata: CreateTokenMetadata,
+        virtualSolReserves: bigint,
+        virtualTokenReserves: bigint,
+        realTokenReserves: bigint,
+        tokenTotalSupply: bigint,
         buyAmountSol: bigint,
         slippageBasisPoints: bigint = BigInt(500),
         tradeAuthority?: Keypair,
@@ -91,6 +103,10 @@ export class HappyPumpSDK {
             createTokenMetadata.symbol,
             tokenMetadata.uri,
             globalAccount.feeRecipient,
+            virtualSolReserves,
+            virtualTokenReserves,
+            realTokenReserves,
+            tokenTotalSupply,
             tradeAuthority?.publicKey,
         );
 
@@ -230,6 +246,10 @@ export class HappyPumpSDK {
         symbol: string,
         uri: string,
         feeRecipient: PublicKey,
+        virtualSolReserves: bigint,
+        virtualTokenReserves: bigint,
+        realTokenReserves: bigint,
+        tokenTotalSupply: bigint,
         tradeAuthority?: PublicKey,
     ) {
         /*
@@ -252,6 +272,10 @@ export class HappyPumpSDK {
                 // @ts-ignore
                 tradeAuthority: tradeAuthority ?? null,
                 creator,
+                virtualSolReserves: virtualSolReserves ? new BN(virtualSolReserves.toString()) : null,
+                virtualTokenReserves: virtualTokenReserves ? new BN(virtualTokenReserves.toString()) : null,
+                realTokenReserves: realTokenReserves ? new BN(realTokenReserves.toString()) : null,
+                tokenTotalSupply: tokenTotalSupply ? new BN(tokenTotalSupply.toString()) : null,
             })
             .accounts({
                 program: this.program.programId,
